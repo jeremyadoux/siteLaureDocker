@@ -1,0 +1,26 @@
+version: '2'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  sitelaure:
+    image: "wordpress"
+    restart: always
+    environment:
+      - VIRTUAL_HOST=petits-papiers.com
+    links:
+      - mysql:mysql
+    volumes:
+      - /root/wordpress:/var/www/html:rw
+  mysql:
+    image: "mysql"
+    restart: always
+    volumes:
+      - /root/mysql:/var/lib/mysql:rw
+    environment:
+      - MYSQL_ROOT_PASSWORD=R0@g25dnC
